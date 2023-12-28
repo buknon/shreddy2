@@ -350,7 +350,7 @@ def erase_medium(device):
         start = timer()
         print(f"+ Run pass {i} on {path}")
         device.set_status(DeviceStatus.RUNNING, f"overwriting pass {i}/{num_passes}")
-        if not run_command(["badblocks", "-w", "-p", "1", "-t", patterns[i], path]):
+        if not run_command(["sudo", "badblocks", "-w", "-p", "1", "-t", patterns[i], path]):
             device.set_error("Erasing failed.")
             bl_handler.set_status(path, DeviceStatus.ERROR)
             return False
@@ -361,7 +361,8 @@ def erase_medium(device):
     start = timer()
     print(f"+ Run pass 3 on {path}")
     device.set_status(DeviceStatus.RUNNING, f"overwriting pass 3/{num_passes}")
-    if not run_command(["shred", "-vn", "1", path]):
+
+    if not run_command(["sudo" "shred", "-vn", "1", path]):
         device.set_error("Erasing failed.")
         bl_handler.set_status(path, DeviceStatus.ERROR)
         return False
